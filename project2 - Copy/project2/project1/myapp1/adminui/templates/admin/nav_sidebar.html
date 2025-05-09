@@ -1,0 +1,357 @@
+{% load i18n %}
+<nav class="advanced-sidebar">
+    <div class="sidebar-header">
+        <h2>Admin Portal</h2>
+        <div class="sidebar-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <ul class="sidebar-menu">
+        <li class="menu-item">
+            <a href="/admin" class="menu-link">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                </span>
+                <span class="menu-text">Dashboard</span>
+                <span class="menu-hover"></span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/profit" class="menu-link">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+                </span>
+                <span class="menu-text">PROFIT</span>
+                <span class="menu-hover"></span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/loss" class="menu-link">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                </span>
+                <span class="menu-text">LOSS</span>
+                <span class="menu-hover"></span>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="/reports" class="menu-link">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                </span>
+                <span class="menu-text">Reports</span>
+                <span class="menu-hover"></span>
+            </a>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <div class="user-profile">
+            <div class="avatar"></div>
+            <div class="user-info">
+                <span class="username">Admin User</span>
+                <span class="user-role">Superuser</span>
+            </div>
+        </div>
+    </div>
+</nav>
+ <STYLE>
+    /* Advanced Sidebar Styles */
+.advanced-sidebar {
+    /* position: fixed; */
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+    color: white;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    overflow: hidden;
+}
+.sidebar-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateZ(20px);
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    background: linear-gradient(to right, #fff, #79aec8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar-toggle {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.sidebar-toggle span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.menu-item {
+    position: relative;
+    margin: 5px 0;
+    perspective: 1000px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+    transform: translateZ(10px);
+}
+
+.menu-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.menu-text {
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    transform: translateZ(10px);
+}
+
+.menu-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(121, 174, 200, 0.2) 0%, rgba(121, 174, 200, 0) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+}
+
+.menu-item:hover .menu-hover {
+    transform: translateX(0);
+}
+
+.menu-item:hover .menu-link {
+    color: white;
+    transform: translateX(10px);
+}
+
+.menu-item:hover .menu-icon {
+    animation: iconBounce 0.6s ease;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateZ(10px) scale(1); }
+    50% { transform: translateZ(10px) scale(1.2); }
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #79aec8 0%, #417690 100%);
+    margin-right: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.user-role {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Collapsed State */
+.advanced-sidebar.collapsed {
+    width: 80px;
+}
+
+.advanced-sidebar.collapsed .menu-text,
+.advanced-sidebar.collapsed .sidebar-header h2,
+.advanced-sidebar.collapsed .user-info {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.advanced-sidebar.collapsed .menu-link {
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.advanced-sidebar.collapsed .menu-icon {
+    margin-right: 0;
+}
+
+/* Toggle Animation */
+.advanced-sidebar.collapsed .sidebar-toggle span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.advanced-sidebar.collapsed .sidebar-toggle span:nth-child(2) {
+    opacity: 0;
+}
+
+.advanced-sidebar.collapsed .sidebar-toggle span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* 3D Depth Effect */
+.advanced-sidebar:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.1), transparent);
+    transform: translateZ(-20px);
+}
+
+/* Ripple Effect */
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Active State */
+.menu-item.active .menu-link {
+    color: white;
+    background: rgba(121, 174, 200, 0.3);
+}
+
+.menu-item.active .menu-hover {
+    transform: translateX(0);
+}
+</STYLE>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.querySelector('.advanced-sidebar');
+    const toggleBtn = document.querySelector('.sidebar-toggle');
+    
+    // Toggle sidebar
+    toggleBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+    });
+    
+    // Add ripple effect to menu items
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            // Remove active class from all items
+            menuItems.forEach(i => i.classList.remove('active'));
+            
+            // Add active class to clicked item
+            this.classList.add('active');
+            
+            // Create ripple effect
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple-effect';
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+            ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+            this.appendChild(ripple);
+            
+            // Remove ripple after animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // Add hover effect to avatar
+    const avatar = document.querySelector('.avatar');
+    avatar.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const angleX = (y - centerY) / 10;
+        const angleY = (centerX - x) / 10;
+        
+        this.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+    });
+    
+    avatar.addEventListener('mouseleave', function() {
+        this.style.transform = 'rotateX(0) rotateY(0)';
+    });
+});
+</script> 

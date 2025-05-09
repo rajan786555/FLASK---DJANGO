@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title_block %}HTMLFormProject{% endblock %}</title>
+
+
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, rgba(224, 247, 250, 0.8), rgba(255, 243, 224, 0.8)), 
+                  url('https://unsplash.com/photos/rear-view-of-courier-with-refrigerator-bag-riding-scooter-along-beautiful-sunny-street-with-small-houses-food-delivery-concept-rzkT2W0BfOo');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      height: 10vh;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+    }
+
+    header .nav-link {
+      color: #333;
+      font-weight: 600;
+      margin-left: 20px;
+      transition: all 0.3s ease;
+    }
+
+    header .nav-link:hover {
+      color: #ff6f61;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+        padding: 1rem;
+      }
+
+      .nav-link {
+        margin-left: 0;
+        margin-top: 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav class="nav ms-auto">
+      <a class="nav-link" href="{% url 'home' %}">🏠 Product App</a>
+      {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'dashboard' %}">📊 Dashboard</a>
+        <a class="nav-link" href="{% url 'logout' %}">🚪 Logout</a>
+      {% else %}
+        <a class="nav-link" href="{% url 'register' %}">📝 Register</a>
+        <a class="nav-link" href="{% url 'login' %}">🔐 Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+  
+  </main>
+
+ 
+
+ 
+</body>
+</html>

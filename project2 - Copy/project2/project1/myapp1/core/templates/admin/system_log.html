@@ -1,0 +1,94 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}System Logs{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">System Logs</h1>
+        <div>
+            <button class="btn btn-primary" id="refreshLogs">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+            <button class="btn btn-secondary">
+                <i class="fas fa-file-export"></i> Export Logs
+            </button>
+        </div>
+    </div>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">System Activity Logs</h6>
+            <div>
+                <select class="form-select form-select-sm" id="logLevel">
+                    <option value="">All Levels</option>
+                    <option value="INFO">Info</option>
+                    <option value="WARNING">Warning</option>
+                    <option value="ERROR">Error</option>
+                </select>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 180px">Timestamp</th>
+                            <th style="width: 100px">Level</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                            <tr class="log-entry {% if log.level == 'ERROR' %}table-danger{% elif log.level == 'WARNING' %}table-warning{% endif %}">
+                                <td>{{ log.timestamp }}</td>
+                                <td>
+                                    {% if log.level == 'INFO' %}
+                                        <span class="badge bg-info">INFO</span>
+                                    {% elif log.level == 'WARNING' %}
+                                        <span class="badge bg-warning">WARNING</span>
+                                    {% elif log.level == 'ERROR' %}
+                                        <span class="badge bg-danger">ERROR</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ log.level }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ log.message }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Filter logs by level
+        $('#logLevel').change(function() {
+            const level = $(this).val();
+            
+            if (level === '') {
+                $('.log-entry').show();
+            } else {
+                $('.log-entry').hide();
+                $(`.log-entry:contains('${level}')`).show();
+            }
+        });
+        
+        // Refresh logs (simulated)
+        $('#refreshLogs').click(function() {
+            $(this).html('<i class="fas fa-spinner fa-spin"></i> Refreshing...');
+            
+            setTimeout(function() {
+                $('#refreshLogs').html('<i class="fas fa-sync-alt"></i> Refresh');
+                alert('Logs refreshed successfully!');
+            }, 1000);
+        });
+    });
+</script>
+{% endblock %}
+

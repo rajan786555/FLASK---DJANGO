@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Delivery Tracking</title>
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --secondary: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --success: #20c997;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+        
+        .tracking-container {
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        
+        .tracking-container:hover {
+            transform: translateY(-5px) rotateX(2deg);
+        }
+        
+        .tracking-header {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tracking-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            animation: shine 8s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-10%, -10%); }
+            100% { transform: rotate(30deg) translate(10%, 10%); }
+        }
+        
+        .tracking-id {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+        
+        .tracking-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .tracking-body {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+        
+        .progress-container {
+            position: relative;
+            margin: 3rem 0;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0;
+            transition: width 1.5s ease, background 1s ease;
+            border-radius: 5px;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: -15px;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            transition: all 0.5s ease;
+            color: #adb5bd;
+        }
+        
+        .step.active .step-icon {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+        }
+        
+        .step.completed .step-icon {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+        
+        .step-label {
+            font-weight: 600;
+            color: #adb5bd;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-label,
+        .step.completed .step-label {
+            color: var(--dark);
+        }
+        
+        .step-time {
+            font-size: 0.8rem;
+            color: #adb5bd;
+            margin-top: 0.2rem;
+        }
+        
+        .step.completed .step-time {
+            color: var(--success);
+        }
+        
+        .delivery-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .detail-title {
+            font-size: 1rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .detail-title svg {
+            margin-right: 0.5rem;
+        }
+        
+        .detail-content {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .map-container {
+            height: 300px;
+            margin-top: 2rem;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .delivery-vehicle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50% 50% 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            animation: bounce 2s infinite ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
+        }
+        
+        .route-path {
+            position: absolute;
+            width: 80%;
+            height: 4px;
+            background: var(--primary);
+            top: 50%;
+            left: 10%;
+            transform-origin: left center;
+            transform: scaleX(0);
+            animation: drawPath 2s forwards 0.5s;
+        }
+        
+        @keyframes drawPath {
+            to { transform: scaleX(1); }
+        }
+        
+        .route-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .route-start {
+            top: 50%;
+            left: 10%;
+        }
+        
+        .route-end {
+            top: 50%;
+            left: 90%;
+        }
+        
+        .eta-display {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .eta-display svg {
+            margin-right: 0.5rem;
+        }
+        
+        .driver-card {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .driver-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            margin-right: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .driver-info {
+            flex: 1;
+        }
+        
+        .driver-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        
+        .driver-contact {
+            display: flex;
+            margin-top: 0.5rem;
+        }
+        
+        .contact-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-btn.call {
+            color: var(--success);
+        }
+        
+        .contact-btn.message {
+            color: var(--primary);
+        }
+        
+        .package-details {
+            margin-top: 1rem;
+        }
+        
+        .package-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .package-item:last-child {
+            border-bottom: none;
+        }
+        
+        .package-label {
+            color: #6c757d;
+        }
+        
+        .package-value {
+            font-weight: 600;
+        }
+        
+        .status-updates {
+            margin-top: 2rem;
+        }
+        
+        .update-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .update-title svg {
+            margin-right: 0.5rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+        }
+        
+        .update-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        
+        .update-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .update-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #adb5bd;
+        }
+        
+        .update-item.recent::before {
+            background: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.3);
+        }
+        
+        .update-time {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 0.3rem;
+        }
+        
+        .update-message {
+            font-weight: 500;
+        }
+        
+        .loading-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            color: var(--dark);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        /* 3D Package Animation */
+        .package-3d {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin: 2rem auto;
+            transform-style: preserve-3d;
+            animation: rotatePackage 15s infinite linear;
+        }
+        
+        .package-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            backface-visibility: visible;
+        }
+        
+        .package-front {
+            transform: translateZ(50px);
+        }
+        
+        .package-back {
+            transform: rotateY(180deg) translateZ(50px);
+        }
+        
+        .package-right {
+            transform: rotateY(90deg) translateZ(50px);
+            background: linear-gradient(135deg, var(--secondary), #ff8e8e);
+        }
+        
+        .package-left {
+            transform: rotateY(-90deg) translateZ(50px);
+            background: linear-gradient(135deg, #3a56ff, var(--primary));
+        }
+        
+        .package-top {
+            transform: rotateX(90deg) translateZ(50px);
+            background: linear-gradient(135deg, var(--primary), #6a85ff);
+        }
+        
+        .package-bottom {
+            transform: rotateX(-90deg) translateZ(50px);
+            background: linear-gradient(135deg, #ff8e8e, var(--secondary));
+        }
+        
+        @keyframes rotatePackage {
+            from { transform: rotateX(0) rotateY(0) rotateZ(0); }
+            to { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .tracking-body {
+                padding: 1rem;
+            }
+            
+            .delivery-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-label {
+                font-size: 0.8rem;
+            }
+            
+            .step-time {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-animation">
+        <div class="loader"></div>
+        <div class="loading-text">Loading Delivery Details...</div>
+    </div>
+
+    <div class="tracking-container">
+        <div class="tracking-header">
+            <div class="tracking-id">Tracking ID: #D-7824-4596-1258</div>
+            <h1 class="tracking-title">Your Delivery is on the Way!</h1>
+            <div class="package-3d">
+                <div class="package-side package-front">FRAGILE</div>
+                <div class="package-side package-back">#D-7824</div>
+                <div class="package-side package-right">↑</div>
+                <div class="package-side package-left">!</div>
+                <div class="package-side package-top"></div>
+                <div class="package-side package-bottom"></div>
+            </div>
+        </div>
+        
+        <div class="tracking-body">
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="progress-steps">
+                <div class="step completed" data-progress="0">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Order Placed</div>
+                    <div class="step-time">Today, 9:30 AM</div>
+                </div>
+                <div class="step completed" data-progress="33">
+                    <div class="step-icon">↻</div>
+                    <div class="step-label">Processing</div>
+                    <div class="step-time">Today, 10:45 AM</div>
+                </div>
+                <div class="step active" data-progress="66">
+                    <div class="step-icon">🚚</div>
+                    <div class="step-label">On the Way</div>
+                    <div class="step-time">Expected 3:15 PM</div>
+                </div>
+                <div class="step" data-progress="100">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Delivered</div>
+                    <div class="step-time">--:-- --</div>
+                </div>
+            </div>
+            
+            <div class="delivery-details">
+                <div class="detail-card">
+                    <div class="detail-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Delivery Address
+                    </div>
+                    <div class="detail-content">
+                        123 Main Street, Apt 4B<br>
+                        New York, NY 10001<br>
+                        United States
+                    </div>
+                </div>
+                
+                <div class="detail-card">
+                    <div class="detail-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                          <path d="M2 10h20M7 15h1m4 0h1m4 0h1"></path>
+                      </svg>
+                      Shipping Details
+                  </div>
+                  <div class="package-details">
+                      <div class="package-item">
+                          <span class="package-label">Carrier:</span>
+                          <span class="package-value">Express Delivery Co.</span>
+                      </div>
+                      <div class="package-item">
+                          <span class="package-label">Service:</span>
+                          <span class="package-value">Priority Overnight</span>
+                      </div>
+                      <div class="package-item">
+                          <span class="package-label">Weight:</span>
+                          <span class="package-value">2.5 kg</span>
+                      </div>
+                      <div class="package-item">
+                          <span class="package-label">Dimensions:</span>
+                          <span class="package-value">30 × 20 × 15 cm</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="detail-card">
+                  <div class="detail-title">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                      Driver Information
+                  </div>
+                  <div class="driver-card">
+                      <div class="driver-avatar">JD</div>
+                      <div class="driver-info">
+                          <div class="driver-name">John Doe</div>
+                          <div class="driver-rating">★★★★☆ (4.2/5)</div>
+                          <div class="driver-contact">
+                              <div class="contact-btn call">
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                  </svg>
+                              </div>
+                              <div class="contact-btn message">
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                  </svg>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="map-container">
+              <div class="map-placeholder">
+                  <div class="route-path"></div>
+                  <div class="route-dot route-start"></div>
+                  <div class="route-dot route-end"></div>
+                  <div class="delivery-vehicle">🚚</div>
+                  <div class="eta-display">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      ETA: 35 min
+                  </div>
+              </div>
+          </div>
+          
+          <div class="status-updates">
+              <div class="update-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                  Status Updates
+              </div>
+              <div class="timeline">
+                  <div class="update-item recent">
+                      <div class="update-time">2:45 PM</div>
+                      <div class="update-message">Package is out for delivery</div>
+                  </div>
+                  <div class="update-item">
+                      <div class="update-time">1:30 PM</div>
+                      <div class="update-message">Package departed from distribution center</div>
+                  </div>
+                  <div class="update-item">
+                      <div class="update-time">11:15 AM</div>
+                      <div class="update-message">Package arrived at local facility</div>
+                  </div>
+                  <div class="update-item">
+                      <div class="update-time">10:45 AM</div>
+                      <div class="update-message">Order processed and ready for shipment</div>
+                  </div>
+                  <div class="update-item">
+                      <div class="update-time">9:30 AM</div>
+                      <div class="update-message">Order received and confirmed</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          // Simulate loading delay
+          setTimeout(function() {
+              document.querySelector('.loading-animation').style.opacity = '0';
+              setTimeout(function() {
+                  document.querySelector('.loading-animation').style.display = 'none';
+                  
+                  // Animate progress bar
+                  const progressBar = document.getElementById('progressBar');
+                  const activeStep = document.querySelector('.step.active');
+                  const progress = activeStep.getAttribute('data-progress');
+                  
+                  progressBar.style.width = progress + '%';
+                  
+                  // Update progress bar color based on progress
+                  if (progress >= 66) {
+                      progressBar.style.background = 'linear-gradient(90deg, var(--primary), var(--secondary))';
+                  } else if (progress >= 33) {
+                      progressBar.style.background = 'linear-gradient(90deg, var(--primary), #8e9ffd)';
+                  }
+                  
+                  // Animate delivery vehicle movement
+                  const vehicle = document.querySelector('.delivery-vehicle');
+                  const path = document.querySelector('.route-path');
+                  const progressPercent = parseInt(progress) / 100;
+                  
+                  // Start position at 10% (route-start is at 10%)
+                  let currentPos = 0.1 + (0.8 * progressPercent);
+                  
+                  // Set initial position
+                  vehicle.style.left = (currentPos * 100) + '%';
+                  
+                  // Simulate live movement
+                  if (progress < 100) {
+                      const moveInterval = setInterval(function() {
+                          currentPos += 0.005;
+                          vehicle.style.left = (currentPos * 100) + '%';
+                          
+                          // Bounce animation
+                          vehicle.style.animation = 'none';
+                          setTimeout(() => {
+                              vehicle.style.animation = 'bounce 2s infinite ease-in-out';
+                          }, 10);
+                          
+                          if (currentPos >= 0.9) {
+                              clearInterval(moveInterval);
+                              // Mark as delivered
+                              document.querySelectorAll('.step').forEach(step => {
+                                  step.classList.remove('active');
+                              });
+                              document.querySelector('.step[data-progress="100"]').classList.add('active', 'completed');
+                              progressBar.style.width = '100%';
+                              progressBar.style.background = 'linear-gradient(90deg, var(--success), #34e8b5)';
+                              
+                              // Update status
+                              const timeline = document.querySelector('.timeline');
+                              const newUpdate = document.createElement('div');
+                              newUpdate.className = 'update-item recent';
+                              newUpdate.innerHTML = `
+                                  <div class="update-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                                  <div class="update-message">Package delivered successfully</div>
+                              `;
+                              timeline.insertBefore(newUpdate, timeline.firstChild);
+                              
+                              // Update ETA
+                              document.querySelector('.eta-display').innerHTML = `
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                  </svg>
+                                  Delivered
+                              `;
+                          }
+                      }, 200);
+                  }
+                  
+                  // Add hover effect to 3D package
+                  const package3d = document.querySelector('.package-3d');
+                  document.addEventListener('mousemove', function(e) {
+                      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                      package3d.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                  });
+                  
+                  // Reset package position when mouse leaves container
+                  document.querySelector('.tracking-header').addEventListener('mouseleave', function() {
+                      package3d.style.transform = 'rotateX(0) rotateY(0)';
+                  });
+                  
+              }, 500);
+          }, 2000);
+          
+          // Contact button interactions
+          document.querySelectorAll('.contact-btn').forEach(btn => {
+              btn.addEventListener('click', function() {
+                  this.style.transform = 'scale(0.9)';
+                  setTimeout(() => {
+                      this.style.transform = 'scale(1.1)';
+                      
+                      if (this.classList.contains('call')) {
+                          alert('Calling driver...');
+                      } else {
+                          alert('Opening messaging app...');
+                      }
+                  }, 100);
+              });
+          });
+      });
+  </script>
+</body>
+</html>

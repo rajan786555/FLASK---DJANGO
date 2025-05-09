@@ -1,0 +1,146 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}Site Settings{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Site Settings</h1>
+    </div>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">General Settings</h6>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="site_name" class="form-label">Site Name</label>
+                        <input type="text" class="form-control" id="site_name" name="site_name" value="{{ settings.site_name }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="admin_email" class="form-label">Admin Email</label>
+                        <input type="email" class="form-control" id="admin_email" name="admin_email" value="admin@example.com">
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="site_description" class="form-label">Site Description</label>
+                        <textarea class="form-control" id="site_description" name="site_description" rows="3">A powerful Django application with admin capabilities.</textarea>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <h6 class="mb-3">System Settings</h6>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="enable_registrations" name="enable_registrations" {% if settings.enable_registrations %}checked{% endif %}>
+                            <label class="form-check-label" for="enable_registrations">Enable User Registrations</label>
+                        </div>
+                        <small class="text-muted">Allow new users to register on the site</small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="maintenance_mode" name="maintenance_mode" {% if settings.maintenance_mode %}checked{% endif %}>
+                            <label class="form-check-label" for="maintenance_mode">Maintenance Mode</label>
+                        </div>
+                        <small class="text-muted">Only admins can access the site during maintenance</small>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="email_notifications" name="email_notifications" {% if settings.email_notifications %}checked{% endif %}>
+                            <label class="form-check-label" for="email_notifications">Email Notifications</label>
+                        </div>
+                        <small class="text-muted">Send email notifications for important events</small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="debug_mode" name="debug_mode">
+                            <label class="form-check-label" for="debug_mode">Debug Mode</label>
+                        </div>
+                        <small class="text-muted">Enable detailed error messages (not recommended for production)</small>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                
+                <h6 class="mb-3">Security Settings</h6>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="session_timeout" class="form-label">Session Timeout (minutes)</label>
+                        <input type="number" class="form-control" id="session_timeout" name="session_timeout" value="30" min="5" max="240">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="password_policy" class="form-label">Password Policy</label>
+                        <select class="form-select" id="password_policy" name="password_policy">
+                            <option value="basic">Basic (8+ characters)</option>
+                            <option value="medium" selected>Medium (8+ chars with numbers)</option>
+                            <option value="strong">Strong (8+ chars with numbers and symbols)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="two_factor_auth" name="two_factor_auth">
+                            <label class="form-check-label" for="two_factor_auth">Two-Factor Authentication</label>
+                        </div>
+                        <small class="text-muted">Require 2FA for admin accounts</small>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="failed_login_lockout" name="failed_login_lockout" checked>
+                            <label class="form-check-label" for="failed_login_lockout">Failed Login Lockout</label>
+                        </div>
+                        <small class="text-muted">Lock accounts after 5 failed login attempts</small>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="reset" class="btn btn-secondary me-md-2">Reset</button>
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-danger">Danger Zone</h6>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning" role="alert">
+                <h5 class="alert-heading">Warning</h5>
+                <p>These actions are irreversible. Please proceed with caution.</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-1">Clear Cache</h6>
+                    <p class="mb-0 text-muted">Clear all cached data and temporary files</p>
+                </div>
+                <button type="button" class="btn btn-outline-warning">Clear Cache</button>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-1">Reset All Settings</h6>
+                    <p class="mb-0 text-muted">Restore all settings to their default values</p>
+                </div>
+                <button type="button" class="btn btn-outline-danger">Reset to Defaults</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

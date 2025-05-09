@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Specials - FoodExpress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #794afa;
+            --secondary-dark: #453c5c;
+            --white: #ffffff;
+            --black: #000000;
+            --gray: #f5f5f5;
+            --gray-dark: #e1e1e1;
+            --text: #333333;
+            --text-light: #777777;
+            --discount: #ff4757;
+            --flash-bg: #fff6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #6a3cf1;
+            box-shadow: 0 5px 15px rgba(121, 74, 250, 0.3);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            color: var(--secondary-dark);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            border: 1px solid var(--gray-dark);
+            border-radius: 30px;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .cart-icon, .user-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Daily Offers Hero */
+        .daily-offer-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .daily-offer-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(121, 74, 250, 0.3));
+        }
+
+        .daily-offer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .daily-offer-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .daily-offer-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Flash Sale Section */
+        .flash-sale {
+            padding: 60px 0;
+            background-color: var(--flash-bg);
+            margin-top: -50px;
+            position: relative;
+            z-index: 2;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .sale-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .sale-title {
+            font-size: 1.8rem;
+            color: var(--discount);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sale-title i {
+            font-size: 2rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .countdown {
+            display: flex;
+            gap: 10px;
+            background-color: var(--white);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown-item {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .countdown-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--discount);
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        .sale-description {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Daily Offers Grid */
+        .daily-offers {
+            padding: 60px 0;
+        }
+
+        .offers-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .offer-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .offer-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--discount);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .offer-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .offer-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .offer-card:hover .offer-img img {
+            transform: scale(1.1);
+        }
+
+        .offer-info {
+            padding: 20px;
+        }
+
+        .offer-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--secondary-dark);
+        }
+
+        .offer-info p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .offer-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .offer-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .current-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            color: #ffc107;
+        }
+
+        .add-to-cart {
+            background-color: var(--secondary);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            background-color: #6a3cf1;
+        }
+
+        /* Combo Offers Section */
+        .combo-offers {
+            padding: 60px 0;
+            background-color: var(--white);
+        }
+
+        .combo-card {
+            background-color: var(--gray);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .combo-header {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .combo-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .combo-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .combo-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .combo-items {
+            margin-bottom: 20px;
+        }
+
+        .combo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--gray-dark);
+        }
+
+        .combo-item:last-child {
+            border-bottom: none;
+        }
+
+        .combo-item-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .combo-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .combo-item-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .combo-item-price {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .combo-total {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid var(--gray-dark);
+        }
+
+        .combo-savings {
+            color: var(--discount);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary-dark);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            transition: color 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .daily-offer-hero {
+                height: 350px;
+            }
+            
+            .daily-offer-content h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .daily-offer-hero {
+                height: 300px;
+                margin-top: 70px;
+            }
+            
+            .daily-offer-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .sale-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .countdown {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .daily-offer-hero {
+                height: 250px;
+            }
+            
+            .daily-offer-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .daily-offer-content p {
+                font-size: 1rem;
+            }
+            
+            .countdown-item {
+                min-width: 50px;
+            }
+            
+            .countdown-value {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Countdown warning styles */
+        .countdown-warning {
+            animation: pulseWarning 1s infinite;
+            background-color: #fff3cd !important;
+            border: 1px solid #ffeeba;
+        }
+
+        .countdown-danger {
+            animation: pulseDanger 0.5s infinite;
+            background-color: #f8d7da !important;
+            border: 1px solid #f5c6cb;
+        }
+
+        .countdown-ended {
+            background-color: #d4edda !important;
+            border: 1px solid #c3e6cb;
+        }
+
+        @keyframes pulseWarning {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes pulseDanger {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--secondary-dark);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast-notification.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodExpress - Daily Offers</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-utensils"></i> FoodExpress
+                </a>
+                <ul class="nav-links">
+                    <li><a href="">Home</a></li>
+                    <li><a href="{% url 'menu'  %}">Menu</a></li>
+                    <!-- <li><a href="#how-it-works">How It Works</a></li> -->
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search food...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="#cart-modal"><i class="fas fa-shopping-cart"></i></a>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <!-- <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div> -->
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Daily Offers Hero -->
+    <section class="daily-offer-hero">
+        <div class="container">
+            <div class="daily-offer-content">
+                <h1>Today's Special Offers</h1>
+                <p>Don't miss out on our exclusive daily deals. Limited time only!</p>
+                <a href="#flash-sale" class="btn">View Flash Sale</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flash Sale Section -->
+    <section class="flash-sale" id="flash-sale">
+        <div class="container">
+            <div class="sale-header">
+                <div class="sale-title">
+                    <i class="fas fa-bolt"></i>
+                    <span>FLASH SALE</span>
+                </div>
+                <div class="countdown" id="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">12</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">45</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="seconds">30</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            <p class="sale-description">Hurry up! These deals won't last long. Enjoy up to 50% off on selected items for the next 24 hours only.</p>
+            
+            <div class="offers-container">
+                <div class="offer-card" data-id="1">
+                    <div class="offer-badge">50% OFF</div>
+                    <div class="offer-img">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=781&q=80" alt="Margherita Pizza">
+                    </div>
+                    <div class="offer-info">
+                        <h3>Margherita Pizza</h3>
+                        <p>Classic pizza with tomato sauce, mozzarella, and basil.</p>
+                        <div class="offer-meta">
+                            <div class="offer-price">
+                                <span class="current-price">$6.50</span>
+                                <span class="original-price">$12.99</span>
+                            </div>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                        </div>
+                        <button class="add-to-cart" data-id="1">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card" data-id="2">
+                    <div class="offer-badge">40% OFF</div>
+                    <div class="offer-img">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=999&q=80" alt="Cheeseburger">
+                    </div>
+                    <div class="offer-info">
+                        <h3>Cheeseburger</h3>
+                        <p>Juicy beef patty with cheese, lettuce, tomato, and special sauce.</p>
+                        <div class="offer-meta">
+                            <div class="offer-price">
+                                <span class="current-price">$5.39</span>
+                                <span class="original-price">$8.99</span>
+                            </div>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                        </div>
+                        <button class="add-to-cart" data-id="2">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card" data-id="3">
+                    <div class="offer-badge">30% OFF</div>
+                    <div class="offer-img">
+                        <img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Chicken Pasta">
+                    </div>
+                    <div class="offer-info">
+                        <h3>Chicken Pasta</h3>
+                        <p>Penne pasta with grilled chicken, mushrooms, and creamy alfredo sauce.</p>
+                        <div class="offer-meta">
+                            <div class="offer-price">
+                                <span class="current-price">$10.49</span>
+                                <span class="original-price">$14.99</span>
+                            </div>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                        <button class="add-to-cart" data-id="3">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Offers Section -->
+    <section class="daily-offers">
+        <div class="container">
+            <h2 class="section-title">Today's Best Deals</h2>
+            <div class="offers-container">
+                <div class="offer-card" data-id="4">
+                    <div class="offer-badge">25% OFF</div>
+                    <div class="offer-img">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="BBQ Ribs">
+                    </div>
+                    <div class="offer-info">
+                        <h3>BBQ Ribs</h3>
+                        <p>Tender pork ribs glazed with our signature BBQ sauce, served with fries.</p>
+                        <div class="offer-meta">
+                            <div class="offer-price">
+                                <span class="current-price">$12.74</span>
+                                <span class="original-price">$16.99</span>
+                            </div>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </span>
+                        </div>
+                        <button class="add-to-cart" data-id="4">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card" data-id="5">
+                    <div class="offer-badge">20% OFF</div>
+                    <div class="offer-img">
+                        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Caesar Salad">
+                    </div>
+                    <div class="offer-info">
+                        <h3>Caesar Salad</h3>
+                        <p>Fresh romaine lettuce with Caesar dressing, croutons, and parmesan.</p>
+                        <div class="offer-meta">
+                            <div class="offer-price">
+                                <span class="current-price">$7.99</span>
+                                <span class="original-price">$9.99</span>
+                            </div>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </span>
+                        </div>
+                        <button class="add-to-cart" data-id="5">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="offer-card" data-id="6">
+                    <div class="offer-badge">15% OFF</div>
+                    <div class="offer-img">
+                        <img src="https://images.unsplash.com/photo-1617196035154-1e7e6e28b0db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Sushi Platter">
+                    </div>
+                    <div class="offer-info">
+                        <h3>Sushi Platter</h3>
+                        <p>Assorted sushi including salmon, tuna, and California rolls.</p>
+                        <div class="offer-meta">
+                            <div class="offer-price">
+                                <span class="current-price">$16.14</span>
+                                <span class="original-price">$18.99</span>
+                            </div>
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </span>
+                        </div>
+                        <button class="add-to-cart" data-id="6">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Combo Offers Section -->
+    <section class="combo-offers">
+        <div class="container">
+            <h2 class="section-title">Special Combos</h2>
+            <div class="offers-container">
+                <div class="combo-card" data-id="7">
+                    <div class="combo-header">
+                        <h3>Family Feast</h3>
+                        <p>Perfect for 4 people</p>
+                    </div>
+                    <div class="combo-body">
+                        <div class="combo-items">
+                            <div class="combo-item">
+                                <div class="combo-item-img">
+                                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=781&q=80" alt="Margherita Pizza">
+                                </div>
+                                <div class="combo-item-info">
+                                    <h4>2 Large Pizzas</h4>
+                                    <div class="combo-item-price">$12.99 each</div>
+                                </div>
+                            </div>
+                            <div class="combo-item">
+                                <div class="combo-item-img">
+                                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=999&q=80" alt="Cheeseburger">
+                                </div>
+                                <div class="combo-item-info">
+                                    <h4>4 Cheeseburgers</h4>
+                                    <div class="combo-item-price">$8.99 each</div>
+                                </div>
+                            </div>
+                            <div class="combo-item">
+                                <div class="combo-item-img">
+                                    <img src="https://images.unsplash.com/photo-1564355808539-22fda35bed7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1630&q=80" alt="Chocolate Lava Cake">
+                                </div>
+                                <div class="combo-item-info">
+                                    <h4>4 Desserts</h4>
+                                    <div class="combo-item-price">$7.99 each</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="combo-total">
+                            <div>
+                                <div class="current-price">$49.99</div>
+                                <div class="combo-savings">Save $27.95</div>
+                            </div>
+                            <button class="add-to-cart" data-id="7">Add Combo</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="combo-card" data-id="8">
+                    <div class="combo-header">
+                        <h3>Date Night Special</h3>
+                        <p>Romantic dinner for two</p>
+                    </div>
+                    <div class="combo-body">
+                        <div class="combo-items">
+                            <div class="combo-item">
+                                <div class="combo-item-img">
+                                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80" alt="BBQ Ribs">
+                                </div>
+                                <div class="combo-item-info">
+                                    <h4>2 BBQ Ribs</h4>
+                                    <div class="combo-item-price">$16.99 each</div>
+                                </div>
+                            </div>
+                            <div class="combo-item">
+                                <div class="combo-item-img">
+                                    <img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Chicken Pasta">
+                                </div>
+                                <div class="combo-item-info">
+                                    <h4>2 Pastas</h4>
+                                    <div class="combo-item-price">$14.99 each</div>
+                                </div>
+                            </div>
+                            <div class="combo-item">
+                                <div class="combo-item-img">
+                                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Wine">
+                                </div>
+                                <div class="combo-item-info">
+                                    <h4>Bottle of Wine</h4>
+                                    <div class="combo-item-price">$19.99 each</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="combo-total">
+                            <div>
+                                <div class="current-price">$59.99</div>
+                                <div class="combo-savings">Save $18.97</div>
+                            </div>
+                            <button class="add-to-cart" data-id="8">Add Combo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items"></div>
+            <div id="cart-total">Total: $0.00</div>
+            <button id="checkout-btn">Proceed to Checkout</button>
+            <button id="clear-cart-btn">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Checkout</h2>
+            <div id="checkout-items"></div>
+            <div id="checkout-total">Total: $0.00</div>
+            <div>
+                <h3>Shipping Information</h3>
+                <input type="text" id="shipping-name" placeholder="Full Name" required>
+                <input type="text" id="shipping-address" placeholder="Address" required>
+                <input type="text" id="shipping-city" placeholder="City" required>
+                <input type="text" id="shipping-zip" placeholder="ZIP Code" required>
+            </div>
+            <div>
+                <h3>Payment Information</h3>
+                <input type="text" id="card-number" placeholder="Card Number" required>
+                <input type="text" id="card-expiry" placeholder="MM/YY" required>
+                <input type="text" id="card-cvc" placeholder="CVC" required>
+            </div>
+            <button id="place-order-btn">Place Order</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>FoodExpress</h3>
+                    <p>Delivering delicious meals to your doorstep since 2010. Our mission is to provide quality food with fast service.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">Daily Offers</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Food Street, New York</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@foodexpress.com</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Opening Hours</h3>
+                    <ul>
+                        <li>Monday - Friday: 9am - 10pm</li>
+                        <li>Saturday: 10am - 11pm</li>
+                        <li>Sunday: 10am - 9pm</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2023 FoodExpress. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product catalog simulation
+        const products = {
+            1: { name: "Margherita Pizza", price: 6.50, type: "single" },
+            2: { name: "Cheeseburger", price: 5.39, type: "single" },
+            3: { name: "Chicken Pasta", price: 10.49, type: "single" },
+            4: { name: "BBQ Ribs", price: 12.74, type: "single" },
+            5: { name: "Caesar Salad", price: 7.99, type: "single" },
+            6: { name: "Sushi Platter", price: 16.14, type: "single" },
+            7: { name: "Family Feast", price: 49.99, type: "combo" },
+            8: { name: "Date Night Special", price: 59.99, type: "combo" }
+        };
+
+        // Cart management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function addToCart(productId) {
+            const product = products[productId];
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    type: product.type
+                });
+            }
+            
+            saveCart();
+            showToast(`${product.name} added to cart!`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+        }
+
+        function updateCartItemQuantity(productId, quantity) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                if (quantity > 0) {
+                    item.quantity = quantity;
+                } else {
+                    removeFromCart(productId);
+                }
+                saveCart();
+            }
+        }
+
+        function clearCart() {
+            cart = [];
+            saveCart();
+        }
+
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalContainer = document.getElementById('cart-total');
+            const cartCount = document.querySelector('.cart-count');
+            
+            let total = 0;
+            let itemCount = 0;
+            cartItemsContainer.innerHTML = '';
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                itemCount += item.quantity;
+
+                const itemElement = document.createElement('div');
+                itemElement.innerHTML = `
+                    <div>
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                        <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" class="cart-quantity">
+                        <button class="remove-item" data-id="${item.id}">Remove</button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+
+            cartTotalContainer.textContent = `Total: $${total.toFixed(2)}`;
+            cartCount.textContent = itemCount;
+
+            // Bind quantity change events
+            document.querySelectorAll('.cart-quantity').forEach(input => {
+                input.addEventListener('change', (e) => {
+                    const productId = e.target.dataset.id;
+                    const quantity = parseInt(e.target.value);
+                    updateCartItemQuantity(productId, quantity);
+                });
+            });
+
+            // Bind remove events
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.dataset.id;
+                    removeFromCart(productId);
+                });
+            });
+        }
+
+        function updateCheckoutDisplay() {
+            const checkoutItemsContainer = document.getElementById('checkout-items');
+            const checkoutTotalContainer = document.getElementById('checkout-total');
+            
+            let total = 0;
+            checkoutItemsContainer.innerHTML = '';
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const itemElement = document.createElement('div');
+                itemElement.innerHTML = `
+                    <div>
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `;
+                checkoutItemsContainer.appendChild(itemElement);
+            });
+
+            checkoutTotalContainer.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Modal handling
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            if (modalId === 'cart-modal') {
+                updateCartDisplay();
+            } else if (modalId === 'checkout-modal') {
+                updateCheckoutDisplay();
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // Countdown Timer
+        function startCountdown() {
+            let totalSeconds = (12 * 3600) + (45 * 60) + 30;
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
+            const countdownContainer = document.getElementById('countdown');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            const saleTitle = document.querySelector('.sale-title');
+            
+            const countdownInterval = setInterval(() => {
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                hoursElement.textContent = hours.toString().padStart(2, '0');
+                minutesElement.textContent = minutes.toString().padStart(2, '0');
+                secondsElement.textContent = seconds.toString().padStart(2, '0');
+                
+                totalSeconds--;
+                
+                if (totalSeconds < 0) {
+                    clearInterval(countdownInterval);
+                    hoursElement.textContent = '00';
+                    minutesElement.textContent = '00';
+                    secondsElement.textContent = '00';
+                    
+                    addToCartButtons.forEach(button => {
+                        button.disabled = true;
+                        button.textContent = 'Sale Ended';
+                    });
+                    
+                    saleTitle.innerHTML = '<i class="fas fa-hourglass-end"></i> SALE ENDED';
+                    showToast('Flash sale has ended!');
+                }
+            }, 1000);
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            startCountdown();
+            updateCartDisplay();
+
+            // Add to cart buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const productId = e.target.dataset.id;
+                    addToCart(productId);
+                });
+            });
+
+            // Modal open/close
+            document.querySelector('.cart-icon a').addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal('cart-modal');
+            });
+
+            document.querySelectorAll('.modal .close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', (e) => {
+                    const modal = e.target.closest('.modal');
+                    closeModal(modal.id);
+                });
+            });
+
+            // Checkout button
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                if (cart.length === 0) {
+                    showToast('Your cart is empty!');
+                    return;
+                }
+                closeModal('cart-modal');
+                openModal('checkout-modal');
+            });
+
+            // Clear cart button
+            document.getElementById('clear-cart-btn').addEventListener('click', () => {
+                clearCart();
+                showToast('Cart cleared!');
+            });
+
+            // Place order button
+            document.getElementById('place-order-btn').addEventListener('click', () => {
+                const inputs = document.querySelectorAll('#checkout-modal input');
+                let allFilled = true;
+
+                inputs.forEach(input => {
+                    if (!input.value) {
+                        allFilled = false;
+                        input.style.border = '1px solid red';
+                    } else {
+                        input.style.border = '';
+                    }
+                });
+
+                if (!allFilled) {
+                    showToast('Please fill in all fields!');
+                    return;
+                }
+
+                // Simulate order processing
+                showToast('Processing your order...');
+                setTimeout(() => {
+                    clearCart();
+                    closeModal('checkout-modal');   
+                    showToast('Order placed successfully! Thank you for your purchase.');
+                }, 1000);
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    closeModal(e.target.id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

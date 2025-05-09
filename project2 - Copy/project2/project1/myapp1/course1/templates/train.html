@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Food to Your Moving Vehicle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --accent: #FFE66D;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+        
+        .moving-vehicle-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .moving-vehicle-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e0e0e0;
+            z-index: 1;
+            border-radius: 2px;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-number {
+            background: var(--primary);
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        }
+        
+        .step.completed .step-number {
+            background: var(--secondary);
+        }
+        
+        .step-text {
+            font-size: 14px;
+            color: #9e9e9e;
+            font-weight: 500;
+        }
+        
+        .step.active .step-text, .step.completed .step-text {
+            color: var(--dark);
+        }
+        
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .form-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.1);
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #3dbeb6;
+            box-shadow: 0 6px 15px rgba(78, 205, 196, 0.3);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-group .btn {
+            flex: 1;
+        }
+        
+        .map-container {
+            height: 250px;
+            margin: 20px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #e0e0e0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #bdbdbd;
+        }
+        
+        .map-placeholder {
+            text-align: center;
+            color: #757575;
+            padding: 20px;
+        }
+        
+        .vehicle-marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            left: 50%;
+            top: 50%;
+            margin: -15px 0 0 -15px;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        .vehicle-marker::after {
+            content: '';
+            width: 14px;
+            height: 14px;
+            margin: 8px 0 0 8px;
+            background: white;
+            position: absolute;
+            border-radius: 50%;
+        }
+        
+        .delivery-estimate {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary);
+            animation: pulse 2s infinite;
+        }
+        
+        .delivery-estimate h3 {
+            margin-top: 0;
+            color: var(--secondary);
+        }
+        
+        .estimate-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .estimate-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .estimate-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .estimate-label {
+            font-size: 12px;
+            color: #757575;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            from { transform: rotate(-45deg) translateY(0); }
+            to { transform: rotate(-45deg) translateY(-10px); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 205, 196, 0.2); }
+            70% { box-shadow: 0 0 0 10px rgba(78, 205, 196, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 205, 196, 0); }
+        }
+        
+        .confirmation {
+            text-align: center;
+            padding: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .confirmation-icon {
+            font-size: 80px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            animation: bounce 0.5s;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #757575;
+        }
+        
+        .food-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .food-item {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .food-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .food-item.selected {
+            border-color: var(--secondary);
+            background-color: rgba(78, 205, 196, 0.1);
+        }
+        
+        .food-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .food-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .food-price {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="moving-vehicle-container animate__animated animate__fadeIn">
+        <h1>Deliver to Moving Vehicle</h1>
+        <p class="subtitle">Get your food delivered directly to your car while you're on the move</p>
+        
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-text">Vehicle Details</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-text">Track Location</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-text">Select Food</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-text">Confirm Order</div>
+            </div>
+        </div>
+        
+        <!-- Step 1: Vehicle Details -->
+        <div class="form-section active" data-step="1">
+            <div class="form-group">
+                <label for="vehicle-type">Vehicle Type</label>
+                <select id="vehicle-type" required>
+                    <option value="">Select your vehicle type</option>
+                    <option value="car">Car</option>
+                    <option value="taxi">Taxi</option>
+                    <option value="rideshare">Rideshare (Uber/Lyft)</option>
+                    <option value="truck">Truck</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="vehicle-color">Vehicle Color</label>
+                <input type="text" id="vehicle-color" placeholder="e.g. Red, Blue, Black" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="vehicle-model">Vehicle Model</label>
+                <input type="text" id="vehicle-model" placeholder="e.g. Toyota Camry, Honda Accord" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="license-plate">License Plate (Optional)</label>
+                <input type="text" id="license-plate" placeholder="Enter license plate if available">
+            </div>
+            
+            <div class="form-group">
+                <label for="current-location">Current Location (or Starting Point)</label>
+                <input type="text" id="current-location" placeholder="Enter your current location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="destination">Destination</label>
+                <input type="text" id="destination" placeholder="Where are you heading?" required>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn" onclick="nextStep()">Continue to Tracking</button>
+            </div>
+        </div>
+        
+        <!-- Step 2: Track Location -->
+        <div class="form-section" data-step="2">
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <div class="vehicle-marker"></div>
+                    <p>Tracking your vehicle location...</p>
+                </div>
+            </div>
+            
+            <div class="delivery-estimate">
+                <h3>Delivery Estimate</h3>
+                <p>Based on your current route and speed, we'll calculate the best intercept point</p>
+                
+                <div class="estimate-details">
+                    <div class="estimate-item">
+                        <div class="estimate-value">5-7</div>
+                        <div class="estimate-label">Minutes</div>
+                    </div>
+                    <div class="estimate-item">
+                        <div class="estimate-value">2.4</div>
+                        <div class="estimate-label">Miles Away</div>
+                    </div>
+                    <div class="estimate-item">
+                        <div class="estimate-value">Main St</div>
+                        <div class="estimate-label">Intercept Point</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="tracking-progress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">Completing location analysis...</div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn" onclick="nextStep()">Continue to Menu</button>
+            </div>
+        </div>
+        
+        <!-- Step 3: Select Food -->
+        <div class="form-section" data-step="3">
+            <div class="form-group">
+                <label>Select Restaurant</label>
+                <select id="restaurant">
+                    <option value="">Choose a restaurant</option>
+                    <option value="mcdonalds">McDonald's</option>
+                    <option value="burgerking">Burger King</option>
+                    <option value="subway">Subway</option>
+                    <option value="starbucks">Starbucks</option>
+                    <option value="tacobell">Taco Bell</option>
+                </select>
+            </div>
+            
+            <div class="food-selection">
+                <div class="food-item" onclick="selectFood(this)">
+                    <div class="food-icon">🍔</div>
+                    <div class="food-name">Classic Burger</div>
+                    <div class="food-price">$5.99</div>
+                </div>
+                <div class="food-item" onclick="selectFood(this)">
+                    <div class="food-icon">🍕</div>
+                    <div class="food-name">Pepperoni Pizza</div>
+                    <div class="food-price">$8.99</div>
+                </div>
+                <div class="food-item" onclick="selectFood(this)">
+                    <div class="food-icon">🥗</div>
+                    <div class="food-name">Caesar Salad</div>
+                    <div class="food-price">$6.49</div>
+                </div>
+                <div class="food-item" onclick="selectFood(this)">
+                    <div class="food-icon">☕</div>
+                    <div class="food-name">Coffee</div>
+                    <div class="food-price">$2.99</div>
+                </div>
+                <div class="food-item" onclick="selectFood(this)">
+                    <div class="food-icon">🍟</div>
+                    <div class="food-name">Fries</div>
+                    <div class="food-price">$3.49</div>
+                </div>
+                <div class="food-item" onclick="selectFood(this)">
+                    <div class="food-icon">🥤</div>
+                    <div class="food-name">Soda</div>
+                    <div class="food-price">$1.99</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="special-instructions">Special Instructions</label>
+                <textarea id="special-instructions" rows="3" placeholder="Any special requests or delivery instructions"></textarea>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn" onclick="nextStep()">Review Order</button>
+            </div>
+        </div>
+        
+        <!-- Step 4: Confirm Order -->
+        <div class="form-section" data-step="4">
+            <div class="confirmation">
+                <div class="confirmation-icon">✓</div>
+                <h2>Ready to Order!</h2>
+                <p>We'll deliver your food to your moving vehicle at the calculated intercept point.</p>
+                
+                <div class="order-summary" style="text-align: left; margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 12px;">
+                    <h3 style="margin-top: 0; color: var(--primary);">Order Summary</h3>
+                    <p><strong>Vehicle:</strong> <span id="summary-vehicle">Red Toyota Camry</span></p>
+                    <p><strong>Intercept Point:</strong> <span id="summary-location">Main St & 5th Ave</span></p>
+                    <p><strong>Estimated Delivery Time:</strong> <span id="summary-time">7 minutes</span></p>
+                    <p><strong>Order:</strong> <span id="summary-order">Classic Burger, Fries, Soda</span></p>
+                    <p><strong>Special Instructions:</strong> <span id="summary-instructions">None</span></p>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                    <button class="btn" onclick="completeOrder()">Confirm & Pay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        function updateStepIndicator() {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active', 'completed');
+                const stepNum = parseInt(step.getAttribute('data-step'));
+                
+                if (stepNum === currentStep) {
+                    step.classList.add('active');
+                } else if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+        }
+        
+        function showStep(step) {
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+                if (parseInt(section.getAttribute('data-step')) === step) {
+                    section.classList.add('active');
+                }
+            });
+            
+            // Special animations for specific steps
+            if (step === 2) {
+                // Animate tracking progress
+                let progress = 0;
+                const progressBar = document.getElementById('tracking-progress');
+                const interval = setInterval(() => {
+                    progress += 5;
+                    progressBar.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        document.querySelector('.progress-text').textContent = 'Location tracking complete!';
+                    }
+                }, 100);
+            }
+            
+            if (step === 4) {
+                // Update order summary
+                document.getElementById('summary-vehicle').textContent = 
+                    `${document.getElementById('vehicle-color').value} ${document.getElementById('vehicle-model').value}`;
+                document.getElementById('summary-location').textContent = 'Main St & 5th Ave';
+                document.getElementById('summary-time').textContent = '7 minutes';
+                document.getElementById('summary-order').textContent = 'Classic Burger, Fries, Soda';
+                document.getElementById('summary-instructions').textContent = 
+                    document.getElementById('special-instructions').value || 'None';
+            }
+        }
+        
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateStepIndicator();
+                showStep(currentStep);
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepIndicator();
+                showStep(currentStep);
+            }
+        }
+        
+        function selectFood(item) {
+            document.querySelectorAll('.food-item').forEach(food => {
+                food.classList.remove('selected');
+            });
+            item.classList.add('selected');
+        }
+        
+        function completeOrder() {
+            // In a real implementation, this would submit the order
+            alert('Order placed successfully! Your food will be delivered to your moving vehicle at the calculated intercept point.');
+            
+            // Reset form (optional)
+            currentStep = 1;
+            updateStepIndicator();
+            showStep(currentStep);
+            document.querySelectorAll('.food-item').forEach(food => {
+                food.classList.remove('selected');
+            });
+            document.getElementById('special-instructions').value = '';
+        }
+        
+        // Initialize
+        updateStepIndicator();
+        showStep(currentStep);
+    </script>
+</body>
+</html>

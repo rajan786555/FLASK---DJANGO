@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - FoodExpress</title>
+    <link rel="stylesheet" href="https:cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #794afa;
+            --secondary-dark: #453c5c;
+            --white: #ffffff;
+            --black: #000000;
+            --gray: #f5f5f5;
+            --gray-dark: #e1e1e1;
+            --text: #333333;
+            --text-light: #777777;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--gray);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #6a3cf1;
+            box-shadow: 0 5px 15px rgba(121, 74, 250, 0.3);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            color: var(--secondary-dark);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-icon, .user-icon {
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https:images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Our Story Section */
+        .our-story {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+
+        .story-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .story-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 500px;
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .story-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .story-content {
+            flex: 1;
+        }
+
+        .story-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary-dark);
+        }
+
+        .story-content p {
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .milestones {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .milestone {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--gray);
+            border-radius: 10px;
+            flex: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .milestone:hover {
+            transform: translateY(-10px);
+        }
+
+        .milestone i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .milestone h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary-dark);
+        }
+
+        /* Team Section */
+        .our-team {
+            padding: 80px 0;
+            background-color: var(--gray);
+        }
+
+        .team-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .team-member {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-image {
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .member-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: var(--secondary-dark);
+        }
+
+        .member-info p {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 35px;
+            height: 35px;
+            background-color: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        /* Values Section */
+        .our-values {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+
+        .values-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background-color: var(--gray);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover .value-icon {
+            background-color: var(--secondary);
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-dark);
+        }
+
+        .value-card p {
+            color: var(--text-light);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 80px 0;
+            background-color: var(--gray);
+        }
+
+        .testimonials-container {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 30px 0;
+            scroll-snap-type: x mandatory;
+            margin-top: 50px;
+        }
+
+        .testimonial-card {
+            min-width: 350px;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            scroll-snap-align: start;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(255, 107, 107, 0.1);
+            font-family: serif;
+            line-height: 1;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .testimonial-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-user h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .testimonial-user span {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-rating {
+            color: #ffc107;
+            margin-bottom: 15px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary-dark);
+            color: var(--white);
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            transition: color 0.3s ease;
+            opacity: 0.8;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        .social-links-footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links-footer a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links-footer a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .story-container {
+                flex-direction: column;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .milestones {
+                flex-direction: column;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .testimonial-card {
+                min-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-utensils"></i> FoodExpress
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="{% url 'menu'  %}">Menu</a></li>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+                <div class="nav-actions">
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <!-- <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div> -->
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="animate">Our Story</h1>
+                <p class="animate delay-1">Discover the passion behind FoodExpress and our journey to serving delicious meals</p>
+                <a href="#our-story" class="btn animate delay-2">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="our-story" id="our-story">
+        <div class="container">
+            <h2 class="section-title animate">Who We Are</h2>
+            <div class="story-container">
+                <div class="story-image animate">
+                    <img src="https:images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Our Restaurant">
+                </div>
+                <div class="story-content">
+                    <h2 class="animate delay-1">From Humble Beginnings</h2>
+                    <p class="animate delay-1">Founded in 2010, FoodExpress started as a small family-owned restaurant with just 5 tables. Our founder, Chef Marco, had a simple vision: to bring authentic, delicious food to our community using the freshest ingredients.</p>
+                    <p class="animate delay-2">Today, we've grown to become one of the most beloved food delivery services in the region, but we've never lost sight of our roots. Every dish we prepare carries the same love and attention to detail that we started with.</p>
+                    
+                    <div class="milestones">
+                        <div class="milestone animate delay-1">
+                            <i class="fas fa-utensils"></i>
+                            <h3>500+</h3>
+                            <p>Menu Items</p>
+                        </div>
+                        <div class="milestone animate delay-2">
+                            <i class="fas fa-users"></i>
+                            <h3>50,000+</h3>
+                            <p>Happy Customers</p>
+                        </div>
+                        <div class="milestone animate delay-3">
+                            <i class="fas fa-truck"></i>
+                            <h3>10,000+</h3>
+                            <p>Deliveries Monthly</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="our-team">
+        <div class="container">
+            <h2 class="section-title animate">Meet Our Team</h2>
+            <div class="team-container">
+                <div class="team-member animate">
+                    <div class="member-image">
+                        <img src="https:images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Chef Marco">
+                    </div>
+                    <div class="member-info">
+                        <h3>Marco Rossi</h3>
+                        <p>Head Chef & Founder</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member animate delay-1">
+                    <div class="member-image">
+                        <img src="https:images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" alt="Chef Sophia">
+                    </div>
+                    <div class="member-info">
+                        <h3>Sophia Chen</h3>
+                        <p>Executive Chef</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member animate delay-2">
+                    <div class="member-image">
+                        <img src="https:images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Manager David">
+                    </div>
+                    <div class="member-info">
+                        <h3>David Johnson</h3>
+                        <p>Operations Manager</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-member animate delay-3">
+                    <div class="member-image">
+                        <img src="https:images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Marketing Emma">
+                    </div>
+                    <div class="member-info">
+                        <h3>Emma Williams</h3>
+                        <p>Marketing Director</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="our-values">
+        <div class="container">
+            <h2 class="section-title animate">Our Core Values</h2>
+            <div class="values-container">
+                <div class="value-card animate">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Quality Ingredients</h3>
+                    <p>We source only the freshest, highest-quality ingredients from trusted local suppliers and farmers.</p>
+                </div>
+                
+                <div class="value-card animate delay-1">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Passion for Food</h3>
+                    <p>Every dish is prepared with love and attention to detail by our team of passionate chefs.</p>
+                </div>
+                
+                <div class="value-card animate delay-2">
+                    <div class="value-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Fast Delivery</h3>
+                    <p>We guarantee your food will arrive hot and fresh within 30 minutes or your next order is free.</p>
+                </div>
+                
+                <div class="value-card animate delay-3">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community Focus</h3>
+                    <p>We're committed to supporting our local community through various initiatives and programs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title animate">What People Say</h2>
+            <div class="testimonials-container">
+                <div class="testimonial-card animate">
+                    <div class="testimonial-header">
+                        <div class="testimonial-img">
+                            <img src="https:images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Customer">
+                        </div>
+                        <div class="testimonial-user">
+                            <h4>Sarah Johnson</h4>
+                            <span>Regular Customer</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"FoodExpress has completely changed my dining habits. The quality is consistently excellent, and the delivery is always on time. I especially love their weekend specials!"</p>
+                </div>
+                
+                <div class="testimonial-card animate delay-1">
+                    <div class="testimonial-header">
+                        <div class="testimonial-img">
+                            <img src="https:images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Customer">
+                        </div>
+                        <div class="testimonial-user">
+                            <h4>Michael Chen</h4>
+                            <span>Food Blogger</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>"As someone who reviews restaurants professionally, I can confidently say FoodExpress stands out for their consistency and innovation. Their seasonal menu changes are always exciting!"</p>
+                </div>
+                
+                <div class="testimonial-card animate delay-2">
+                    <div class="testimonial-header">
+                        <div class="testimonial-img">
+                            <img src="https:images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" alt="Customer">
+                        </div>
+                        <div class="testimonial-user">
+                            <h4>Emily Rodriguez</h4>
+                            <span>First-time Customer</span>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"I was skeptical about food delivery maintaining quality, but FoodExpress proved me wrong. The pasta arrived piping hot and tasted like it was made in a fine dining restaurant!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="animate">Ready to Taste the Difference?</h2>
+                <p class="animate delay-1">Join thousands of satisfied customers who enjoy our delicious meals every day</p>
+                <a href="#" class="btn btn-secondary animate delay-2">Order Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>FoodExpress</h3>
+                    <p>Delivering delicious meals to your doorstep since 2010. Our mission is to provide quality food with fast service.</p>
+                    <div class="social-links-footer">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Food Street, New York</li>
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@foodexpress.com</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Opening Hours</h3>
+                    <ul>
+                        <li>Monday - Friday: 9am - 10pm</li>
+                        <li>Saturday: 10am - 11pm</li>
+                        <li>Sunday: 10am - 9pm</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 FoodExpress. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

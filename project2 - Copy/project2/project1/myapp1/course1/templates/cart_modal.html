@@ -1,0 +1,27 @@
+<div class="cart-items">
+    {% if cart_items %}
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <div class="cart-item-img">
+                <img src="{{ item.image }}" alt="{{ item.name }}">
+            </div>
+            <div class="cart-item-info">
+                <h4>{{ item.name }}</h4>
+                <div class="cart-item-price">${{ item.price|floatformat:2 }}</div>
+                <div class="cart-item-quantity">
+                    <button class="quantity-btn minus" data-id="{{ item.id }}">-</button>
+                    <input type="text" class="quantity-input" value="{{ item.quantity }}" readonly>
+                    <button class="quantity-btn plus" data-id="{{ item.id }}">+</button>
+                    <span class="remove-item" data-id="{{ item.id }}"><i class="fas fa-trash"></i></span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="text-align: center;">Your cart is empty</p>
+    {% endif %}
+</div>
+<div class="cart-total">
+    <span>Total:</span>
+    <span id="cartTotal">${{ cart_total|floatformat:2 }}</span>
+</div>
