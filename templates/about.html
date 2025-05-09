@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant Team</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #fff5f0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .header {
+        text-align: left;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .logo-mascot {
+        width: 150px;
+        height: auto;
+      }
+
+      .about-section {
+        flex: 1;
+      }
+
+      h1 {
+        color: #ff4500;
+        margin-bottom: 20px;
+        font-size: 2.5em;
+      }
+
+      .chefs-section {
+        margin: 50px 0;
+      }
+
+      h2 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2em;
+      }
+
+      .chefs-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 50px;
+      }
+
+      .chef-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .chef-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 15px;
+      }
+
+      .chef-name {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .chef-bio {
+        font-size: 0.9em;
+        color: #666;
+      }
+
+      .story-section {
+        margin-bottom: 50px;
+      }
+
+      .story-section h2 {
+        color: #ff4500;
+        text-align: left;
+        margin-bottom: 20px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .chefs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .about-section {
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .chefs-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          padding: 10px;
+        }
+
+        h1 {
+          font-size: 2em;
+        }
+
+        h2 {
+          font-size: 1.5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <img
+          src="../static/images/logo.png"
+          alt="Chef Mascot"
+          class="logo-mascot"
+        />
+        <div class="about-section">
+          <h1>About Us</h1>
+          <p>
+            Welcome to CRUNCHY MUNCHY, your go-to online food ordering
+            platform dedicated to delivering delicious meals right to your
+            doorstep! We believe that ordering food should be convenient, fast,
+            and enjoyable, which is why we have created a seamless and
+            user-friendly experience for all food lovers. Our Mission Our
+            mission is to connect customers with their favorite local
+            restaurants, offering a diverse range of cuisines and dishes to
+            satisfy every craving. We strive to provide a hassle-free food
+            ordering experience, ensuring timely deliveries and top-notch
+            customer service.
+          </p>
+        </div>
+      </header>
+
+      <section class="chefs-section">
+        <h2>Our Golden Chefs</h2>
+        <div class="chefs-grid">
+          <!-- Chef Card 1 -->
+          <div class="chef-card">
+            <img
+              src="../static/images/chef1.png"
+              alt="Chef 1"
+              class="chef-image"
+            />
+            <h3 class="chef-name">Raghav Ahuja</h3>
+            <p class="chef-bio">
+              Raghav Ahuja is the winner of the first season of MasterChef
+              India. She has hosted multiple Indian cooking shows, including
+              Chef Pankaj ka Zyaka on ...
+            </p>
+          </div>
+
+          <!-- Chef Card 2 -->
+          <div class="chef-card">
+            <img
+              src="../static/images/chef2.png"
+              alt="Chef 2"
+              class="chef-image"
+            />
+            <h3 class="chef-name">Pankaj Bhadouria</h3>
+            <p class="chef-bio">
+              Pankaj Bhadouria is the winner of the first season of MasterChef
+              India. She has hosted multiple Indian cooking shows, including
+              Chef Pankaj ka Zyaka on ...
+            </p>
+          </div>
+
+          <!-- Chef Card 3 -->
+          <div class="chef-card">
+            <img
+              src="../static/images/chef3.png"
+              alt="Chef 3"
+              class="chef-image"
+            />
+            <h3 class="chef-name">Vineet Bhatia</h3>
+            <p class="chef-bio">
+              Vineet Bhatia. Another recipient of Michelin star, Vineet Bhatia
+              is an Indian chef, restaurateur, media personality, and author.
+              Vineet began his career as ...
+            </p>
+          </div>
+
+          <!-- Chef Card 4 -->
+          <div class="chef-card">
+            <img
+              src="../static/images/chef4.png"
+              alt="Chef 4"
+              class="chef-image"
+            />
+            <h3 class="chef-name">Kunal Kapur</h3>
+            <p class="chef-bio">
+              Kunal Kapur. Kunal Kapur is a renowned Indian chef, restaurateur,
+              and television personality who has made significant contributions
+              to popularizing Indian ...
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="story-section">
+        <h2>Our Story</h2>
+        <p>
+          In a world where time is precious and convenience is key, FOODIE was
+          born out of a simple yet powerful idea: to make delicious food
+          accessible to everyone, anytime, anywhere. Our journey began in [Year]
+          when our founders, [Founders' Names], realized that busy lifestyles
+          often left people with little time to enjoy a good meal. They
+          envisioned a platform that would bridge the gap between local
+          restaurants and hungry customers, allowing them to savor their
+          favorite dishes without the hassle of cooking or long waits. Starting
+          from a small kitchen in [Location], we partnered with local eateries,
+          showcasing their unique flavors and culinary talents. Our mission was
+          clear: to support local businesses while providing our customers with
+          a diverse range of food options. We believed that every meal should be
+          an experience, not just a necessity. As we grew, so did our commitment
+          to quality and service. We invested in technology to create a
+          user-friendly app and website, making it easier for customers to
+          browse menus, place orders, and track deliveries in real-time. Our
+          team worked tirelessly to ensure that every order was handled with
+          care, from the moment it was placed to the moment it arrived at the
+          customer's doorstep. But our story doesn’t end there. We recognized
+          the importance of sustainability and community. We implemented
+          eco-friendly packaging, partnered with local farms for fresh
+          ingredients, and launched initiatives to give back to the community.
+          Whether it’s through food drives, supporting local charities, or
+          promoting healthy eating, we strive to make a positive impact beyond
+          just food delivery. Today, FOODIE has grown into a beloved platform,
+          serving thousands of customers and partnering with hundreds of
+          restaurants. We take pride in our diverse offerings, from gourmet
+          meals to comfort food, ensuring that there’s something for everyone.
+          Our dedicated team continues to innovate, always looking for ways to
+          enhance the customer experience and support our partners. As we look
+          to the future, we remain committed to our core values: quality,
+          convenience, and community. We invite you to join us on this delicious
+          journey, where every order tells a story, and every meal brings people
+          together. Thank you for being a part of the FOODIE family!
+        </p>
+      </section>
+    </div>
+  </body>
+</html>

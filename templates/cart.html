@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .cart {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item p {
+            font-size: 16px;
+            margin: 0;
+            color: #555;
+        }
+
+        .cart-total {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: right;
+            color: #2c3e50;
+        }
+
+        .payment-method {
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-method h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .payment-method label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding-left: 35px;
+            position: relative;
+            color: #555;
+        }
+
+        .payment-method input[type="radio"] {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .back-to-shop {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-shop a {
+            font-size: 16px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .back-to-shop a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Your Cart</h1>
+        <div class="cart">
+            {% if cart %}
+                {% for id, item in cart.items() %}
+                    <div class="cart-item">
+                        <p>{{ item['name'] }} - ${{ item['price'] }} x {{ item['quantity'] }} = ${{ item['price'] * item['quantity'] }}</p>
+                    </div>
+                {% endfor %}
+                <p class="cart-total">Total: ${{ total }}</p>
+    
+                <!-- Payment options form -->
+                <form action="{{ url_for('place_order') }}" method="POST">
+                    <div class="payment-options">
+                        <label>
+                            <input type="radio" name="payment_method" value="UPI" required>
+                            UPI (Google Pay, PhonePe, etc.)
+                        </label>
+                        <label>
+                            <input type="radio" name="payment_method" value="ICICI" required>
+                            ICICI Bank
+                        </label>
+                        <label>
+                            <input type="radio" name="payment_method" value="SBI" required>
+                            SBI Bank
+                        </label>
+                        <label>
+                            <input type="radio" name="payment_method" value="COD" required>
+                            Cash on Delivery (COD)
+                        </label>
+                    </div>
+                    <button type="submit">Place Order</button>
+                </form>
+            {% else %}
+                <p>Your cart is empty!</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    
+</body>
+</html>

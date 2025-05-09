@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Search Functionality</title>
+    <style>
+
+        #result{
+            display: flex;
+            flex-direction: row;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 5px 0;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .suggestions {
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Search</h1>
+    <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search..." required>
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="results">
+        <div class="item">Crispy Burger
+            <img src="../static/images/burger.jpg" alt="">
+            <a href="{{url_for('show_menu')}}" class="btn">order now</a>
+        </div>
+        <div class="item">Aloo Tikki Burger
+            <img src="../static/images/burger.jpg" alt="">
+            <a href="{{url_for('show_menu')}}" class="btn">order now</a>
+        </div>
+        <div class="item">Cheese Burger
+            <img src="../static/images/burger.jpg" alt="">
+            <a href="{{url_for('show_menu')}}" class="btn">order now</a>
+        </div>
+        <div class="item">Double Tikki Burger
+            <img src="../static/images/burger.jpg" alt="">
+            <a href="{{url_for('show_menu')}}" class="btn">order now</a>
+        </div>
+        <div class="item">Veggie Burger
+            <img src="../static/images/burger.jpg" alt="">
+            <a href="{{url_for('show_menu')}}" class="btn">order now</a>
+        </div>
+        <div class="item">Chicken Burger
+            <img src="../static/images/burger.jpg" alt="">
+            <a href="{{url_for('show_menu')}}" class="btn">order now</a>
+
+        </div>
+    </div>
+
+    <div id="suggestions" class="suggestions"></div>
+</div>
+
+<script>
+    const items = Array.from(document.querySelectorAll('.item'));
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsDiv = document.getElementById('suggestions');
+
+    // Debounce function
+    function debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
+    // Highlight matches
+    function highlightMatches(text, query) {
+        const regex = new RegExp(`(${query})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+
+    // Search function
+    function search(query) {
+        let found = false;
+        items.forEach(item => {
+            const itemName = item.textContent.toLowerCase();
+            if (itemName.includes(query)) {
+                item.innerHTML = highlightMatches(item.textContent, query); // Highlight matches
+                item.style.display = 'block'; // Show item if it matches
+                found = true;
+            } else {
+                item.style.display = 'none'; // Hide item if it doesn't match
+            }
+        });
+
+        if (!found) {
+            suggestionsDiv.style.display = 'none'; // Hide suggestions if no results
+            alert('No results found');
+        } else {
+            suggestionsDiv.style.display = 'none'; // Hide suggestions if results found
+        }
+    }
+
+    // Handle input event
+    searchInput.addEventListener('input', debounce(function() {
+        const query = this.value.toLowerCase();
+        search(query);
+    }, 300));
+
+    // Optional: Add suggestions based on input
+    function showSuggestions(query) {
+        const suggestions = items.filter(item => item.textContent.toLowerCase().includes(query));
+        suggestionsDiv.innerHTML = '';
+        suggestions.forEach(item => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.className = 'suggestion-item';
+            suggestionItem.textContent = item.textContent;
+            suggestionItem.onclick = function() {
+                searchInput.value = item.textContent; // Set input to suggestion
+                search(item.textContent.toLowerCase()); // Perform search
+                suggestionsDiv.style.display = 'none'; // Hide suggestions
+            };
+            suggestionsDiv.appendChild(suggestionItem);
+        });
+        suggestionsDiv.style.display = suggestions.length ? 'block' : 'none';
+    }
+
+    // Show suggestions on input
+    searchInput.addEventListener('input', debounce(function() {
+        const query = this.value.toLowerCase();
+        showSuggestions(query);
+    }, 300));
+</script>
+
+</body>
+</html>

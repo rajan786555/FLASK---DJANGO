@@ -1,0 +1,76 @@
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        /* Reset some default styles */
+        body, h1, p {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body styles */
+        body {
+            background-color: #f4f4f4; /* Light background color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full viewport height */
+            color: #333; /* Default text color */
+        }
+
+        /* Container styles */
+        .container {
+            text-align: center; /* Center text */
+            padding: 40px;
+            background-color: white; /* White background for the content */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            max-width: 400px; /* Max width for the container */
+            width: 90%; /* Responsive width */
+        }
+
+        /* Heading styles */
+        h1 {
+            color: #28a745; /* Green color for success */
+            margin-bottom: 20px;
+            font-size: 24px; /* Increased font size */
+        }
+
+        /* Paragraph styles */
+        p {
+            color: #555; /* Slightly lighter text for readability */
+            margin-bottom: 30px;
+            font-size: 16px; /* Increased font size */
+        }
+
+        /* Link styles */
+        a {
+            text-decoration: none;
+            color:orange; /* Blue color for links */
+            font-size: 18px;
+            padding: 10px 20px; /* Padding for the button effect */
+            border: 2px solid orange; /* Border for button */
+            border-radius: 5px; /* Rounded corners for button */
+            transition: background-color 0.3s, color 0.3s; /* Transition effects */
+        }
+
+        a:hover {
+            background-color: orange; /* Background color on hover */
+            color: white; /* Text color on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Placed Successfully!</h1>
+        <p>Thank you for your order.</p>
+        <a href="{{ url_for('index') }}">Return to Home</a>
+    </div>
+</body>
+</html>
